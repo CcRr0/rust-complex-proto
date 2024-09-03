@@ -134,29 +134,29 @@ mod complex {
         }
         #[inline(always)]
         pub fn asin(self) -> Self {
-            -Self::IMAG_UNIT * (Self::IMAG_UNIT * self + (Self::REAL_UNIT - self * self).sqrt()).ln()
+            -Self::IMAG_UNIT * (Self::IMAG_UNIT * self + (-(self * self) + 1.0_f64).sqrt()).ln()
         }
         #[inline(always)]
         pub fn acos(self) -> Self {
-            -Self::IMAG_UNIT * (self + Self::IMAG_UNIT * (Self::REAL_UNIT - self * self).sqrt()).ln()
+            -Self::IMAG_UNIT * (self + Self::IMAG_UNIT * (-(self * self) + 1.0_f64).sqrt()).ln()
         }
         #[inline(always)]
         pub fn atan(self) -> Self {
             Self::IMAG_UNIT * Self::with_real(0.5) * (
-                (Self::REAL_UNIT - Self::IMAG_UNIT * self) / (Self::REAL_UNIT + Self::IMAG_UNIT * self)
+                (-(Self::IMAG_UNIT * self) + 1.0_f64) / (Self::IMAG_UNIT * self + 1.0_f64)
             ).ln()
         }
         #[inline(always)]
         pub fn asinh(self) -> Self {
-            (self + (self * self + Self::REAL_UNIT).sqrt()).ln()
+            (self + (self * self + 1.0_f64).sqrt()).ln()
         }
         #[inline(always)]
         pub fn acosh(self) -> Self {
-            (self + (self * self - Self::REAL_UNIT).sqrt()).ln()
+            (self + (self * self - 1.0_f64).sqrt()).ln()
         }
         #[inline(always)]
         pub fn atanh(self) -> Self {
-            Self::with_real(0.5) * ((Self::REAL_UNIT + self) / (Self::REAL_UNIT - self)).ln()
+            Self::with_real(0.5) * ((self + 1.0_f64) / (-self + 1.0_f64)).ln()
         }
     }
     impl Neg for Complex {
