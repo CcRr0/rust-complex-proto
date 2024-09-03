@@ -1,8 +1,9 @@
 mod complex {
+    use std::ops::{Neg, Add, AddAssign, Sub, SubAssign, Mul, MulAssign, Div, DivAssign};
     #[derive(Clone, Copy)]
     pub struct Complex {
-        real: f64,
-        imag: f64,
+        pub real: f64,
+        pub imag: f64,
     }
     #[allow(dead_code)]
     impl Complex {
@@ -158,7 +159,7 @@ mod complex {
             Self::with_real(0.5) * ((Self::REAL_UNIT + self) / (Self::REAL_UNIT - self)).ln()
         }
     }
-    impl std::ops::Neg for Complex {
+    impl Neg for Complex {
         type Output = Self;
         #[inline(always)]
         fn neg(self) -> Self {
@@ -168,7 +169,7 @@ mod complex {
             )
         }
     }
-    impl std::ops::Add for Complex {
+    impl Add for Complex {
         type Output = Self;
         #[inline(always)]
         fn add(self, other: Self) -> Self {
@@ -178,13 +179,13 @@ mod complex {
             )
         }
     }
-    impl std::ops::AddAssign for Complex {
+    impl AddAssign for Complex {
         #[inline(always)]
         fn add_assign(&mut self, other: Self) {
             *self = *self + other;
         }
     }
-    impl std::ops::Sub for Complex {
+    impl Sub for Complex {
         type Output = Self;
         #[inline(always)]
         fn sub(self, other: Self) -> Self {
@@ -194,13 +195,13 @@ mod complex {
             )
         }
     }
-    impl std::ops::SubAssign for Complex {
+    impl SubAssign for Complex {
         #[inline(always)]
         fn sub_assign(&mut self, other: Self) {
             *self = *self - other;
         }
     }
-    impl std::ops::Mul for Complex {
+    impl Mul for Complex {
         type Output = Self;
         #[inline(always)]
         fn mul(self, other: Self) -> Self {
@@ -210,13 +211,13 @@ mod complex {
             )
         }
     }
-    impl std::ops::MulAssign for Complex {
+    impl MulAssign for Complex {
         #[inline(always)]
         fn mul_assign(&mut self, other: Self) {
             *self = *self * other;
         }
     }
-    impl std::ops::Div for Complex {
+    impl Div for Complex {
         type Output = Self;
         #[inline(always)]
         fn div(self, other: Self) -> Self {
@@ -227,10 +228,11 @@ mod complex {
             )
         }
     }
-    impl std::ops::DivAssign for Complex {
+    impl DivAssign for Complex {
         #[inline(always)]
         fn div_assign(&mut self, other: Self) {
             *self = *self / other;
         }
     }
 }
+use complex::*;
