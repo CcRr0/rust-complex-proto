@@ -1,6 +1,6 @@
 mod complex {
     use std::ops::{Neg, Add, AddAssign, Sub, SubAssign, Mul, MulAssign, Div, DivAssign};
-    #[derive(Clone, Copy)]
+    #[derive(Clone, Copy, Default)]
     pub struct Complex {
         pub real: f64,
         pub imag: f64,
@@ -248,8 +248,10 @@ mod complex {
     impl MulAssign for Complex {
         #[inline(always)]
         fn mul_assign(&mut self, other: Self) -> () {
-            self.real = self.real * other.real - self.imag * other.imag;
-            self.imag = self.real * other.imag + self.imag * other.real;
+            (self.real, self.imag) = (
+                self.real * other.real - self.imag * other.imag,
+                self.real * other.imag + self.imag * other.real
+            );
         }
     }
     impl Mul<f64> for Complex {
@@ -284,8 +286,10 @@ mod complex {
         #[inline(always)]
         fn div_assign(&mut self, other: Self) -> () {
             let denom: f64 = other.norm();
-            self.real = (self.real * other.real + self.imag * other.imag) / denom;
-            self.imag = (self.imag * other.real - self.real * other.imag) / denom;
+            (self.real, self.imag) = (
+                (self.real * other.real + self.imag * other.imag) / denom,
+                (self.imag * other.real - self.real * other.imag) / denom
+            );
         }
     }
     impl Div<f64> for Complex {
