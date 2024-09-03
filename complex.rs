@@ -162,7 +162,7 @@ mod complex {
     impl Neg for Complex {
         type Output = Self;
         #[inline(always)]
-        fn neg(self) -> Self {
+        fn neg(self) -> Self::Output {
             Self::new(
                 -self.real,
                 -self.imag,
@@ -172,7 +172,7 @@ mod complex {
     impl Add for Complex {
         type Output = Self;
         #[inline(always)]
-        fn add(self, other: Self) -> Self {
+        fn add(self, other: Self) -> Self::Output {
             Self::new(
                 self.real + other.real,
                 self.imag + other.imag,
@@ -181,14 +181,31 @@ mod complex {
     }
     impl AddAssign for Complex {
         #[inline(always)]
-        fn add_assign(&mut self, other: Self) {
-            *self = *self + other;
+        fn add_assign(&mut self, other: Self) -> () {
+            self.real += other.real;
+            self.imag += other.imag;
+        }
+    }
+    impl Add<f64> for Complex {
+        type Output = Self;
+        #[inline(always)]
+        fn add(self, rhs: f64) -> Self::Output {
+            Self::new(
+                self.real + rhs,
+                self.imag,
+            )
+        }
+    }
+    impl AddAssign<f64> for Complex {
+        #[inline(always)]
+        fn add_assign(&mut self, rhs: f64) -> () {
+            self.real += rhs;
         }
     }
     impl Sub for Complex {
         type Output = Self;
         #[inline(always)]
-        fn sub(self, other: Self) -> Self {
+        fn sub(self, other: Self) -> Self::Output {
             Self::new(
                 self.real - other.real,
                 self.imag - other.imag,
@@ -197,14 +214,31 @@ mod complex {
     }
     impl SubAssign for Complex {
         #[inline(always)]
-        fn sub_assign(&mut self, other: Self) {
-            *self = *self - other;
+        fn sub_assign(&mut self, other: Self) -> () {
+            self.real -= other.real;
+            self.imag -= other.imag;
+        }
+    }
+    impl Sub<f64> for Complex {
+        type Output = Self;
+        #[inline(always)]
+        fn sub(self, rhs: f64) -> Self::Output {
+            Self::new(
+                self.real - rhs,
+                self.imag,
+            )
+        }
+    }
+    impl SubAssign<f64> for Complex {
+        #[inline(always)]
+        fn sub_assign(&mut self, rhs: f64) -> () {
+            self.real -= rhs;
         }
     }
     impl Mul for Complex {
         type Output = Self;
         #[inline(always)]
-        fn mul(self, other: Self) -> Self {
+        fn mul(self, other: Self) -> Self::Output {
             Self::new(
                 self.real * other.real - self.imag * other.imag,
                 self.real * other.imag + self.imag * other.real,
@@ -213,15 +247,33 @@ mod complex {
     }
     impl MulAssign for Complex {
         #[inline(always)]
-        fn mul_assign(&mut self, other: Self) {
-            *self = *self * other;
+        fn mul_assign(&mut self, other: Self) -> () {
+            self.real = self.real * other.real - self.imag * other.imag;
+            self.imag = self.real * other.imag + self.imag * other.real;
+        }
+    }
+    impl Mul<f64> for Complex {
+        type Output = Self;
+        #[inline(always)]
+        fn mul(self, rhs: f64) -> Self::Output {
+            Self::new(
+                self.real * rhs,
+                self.imag * rhs,
+            )
+        }
+    }
+    impl MulAssign<f64> for Complex {
+        #[inline(always)]
+        fn mul_assign(&mut self, rhs: f64) -> () {
+            self.real *= rhs;
+            self.imag *= rhs;
         }
     }
     impl Div for Complex {
         type Output = Self;
         #[inline(always)]
-        fn div(self, other: Self) -> Self {
-            let denom: f64 = other.real * other.real + other.imag * other.imag;
+        fn div(self, other: Self) -> Self::Output {
+            let denom: f64 = other.norm();
             Self::new(
                 (self.real * other.real + self.imag * other.imag) / denom,
                 (self.imag * other.real - self.real * other.imag) / denom,
@@ -230,9 +282,28 @@ mod complex {
     }
     impl DivAssign for Complex {
         #[inline(always)]
-        fn div_assign(&mut self, other: Self) {
-            *self = *self / other;
+        fn div_assign(&mut self, other: Self) -> () {
+            let denom: f64 = other.norm();
+            self.real = (self.real * other.real + self.imag * other.imag) / denom;
+            self.imag = (self.imag * other.real - self.real * other.imag) / denom;
+        }
+    }
+    impl Div<f64> for Complex {
+        type Output = Self;
+        #[inline(always)]
+        fn div(self, rhs: f64) -> Self::Output {
+            Self::new(
+                self.real / rhs,
+                self.imag / rhs,
+            )
+        }
+    }
+    impl DivAssign<f64> for Complex {
+        #[inline(always)]
+        fn div_assign(&mut self, rhs: f64) -> () {
+            self.real /= rhs;
+            self.imag /= rhs;
         }
     }
 }
-use complex::*;
+use complex::Complex;
