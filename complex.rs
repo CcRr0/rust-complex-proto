@@ -250,7 +250,7 @@ mod complex {
         fn mul_assign(&mut self, other: Self) -> () {
             (self.real, self.imag) = (
                 self.real * other.real - self.imag * other.imag,
-                self.real * other.imag + self.imag * other.real
+                self.real * other.imag + self.imag * other.real,
             );
         }
     }
@@ -288,7 +288,7 @@ mod complex {
             let denom: f64 = other.norm();
             (self.real, self.imag) = (
                 (self.real * other.real + self.imag * other.imag) / denom,
-                (self.imag * other.real - self.real * other.imag) / denom
+                (self.imag * other.real - self.real * other.imag) / denom,
             );
         }
     }
