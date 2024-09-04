@@ -1,6 +1,7 @@
 mod complex {
     use std::ops::{Neg, Add, AddAssign, Sub, SubAssign, Mul, MulAssign, Div, DivAssign};
-    #[derive(Clone, Copy, Default)]
+    use std::fmt;
+    #[derive(Copy, Clone, Default)]
     pub struct Complex {
         pub real: f64,
         pub imag: f64,
@@ -64,7 +65,7 @@ mod complex {
         #[inline(always)]
         pub fn sqrt(self) -> Self {
             let abs_sqrt: f64 = self.abs().sqrt();
-            let arg_half: f64 = self.arg() / 2.0;
+            let arg_half: f64 = self.arg() * 0.5;
             Self::new(
                 abs_sqrt * arg_half.cos(),
                 abs_sqrt * arg_half.sin(),
@@ -307,6 +308,16 @@ mod complex {
         fn div_assign(&mut self, rhs: f64) -> () {
             self.real /= rhs;
             self.imag /= rhs;
+        }
+    }
+    impl fmt::Display for Complex {
+        #[inline(always)]
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            if let Some(precision) = f.precision() {
+                write!(f, "{:.precision$}{:+.precision$}i", self.real, self.imag, precision = precision)
+            } else {
+                write!(f, "{}{:+}i", self.real, self.imag)
+            }
         }
     }
 }
