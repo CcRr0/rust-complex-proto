@@ -8,19 +8,19 @@ mod complex {
     }
     #[allow(dead_code)]
     impl Complex {
-        pub const REAL_UNIT: Self = Self { real: 1.0, imag: 0.0 };
-        pub const IMAG_UNIT: Self = Self { real: 0.0, imag: 1.0 };
+        pub const REAL_UNIT: Self = Self { real: 1.0_f64, imag: 0.0_f64 };
+        pub const IMAG_UNIT: Self = Self { real: 0.0_f64, imag: 1.0_f64 };
         #[inline(always)]
         pub fn new(real: f64, imag: f64) -> Self {
             Self { real, imag }
         }
         #[inline(always)]
         pub fn with_real(real: f64) -> Self {
-            Self::new(real, 0.0)
+            Self::new(real, 0.0_f64)
         }
         #[inline(always)]
         pub fn with_imag(imag: f64) -> Self {
-            Self::new(0.0, imag)
+            Self::new(0.0_f64, imag)
         }
         #[inline(always)]
         pub fn abs(self) -> f64 {
@@ -65,7 +65,7 @@ mod complex {
         #[inline(always)]
         pub fn sqrt(self) -> Self {
             let abs_sqrt: f64 = self.abs().sqrt();
-            let arg_half: f64 = self.arg() * 0.5;
+            let arg_half: f64 = self.arg() * 0.5_f64;
             Self::new(
                 abs_sqrt * arg_half.cos(),
                 abs_sqrt * arg_half.sin(),
@@ -89,8 +89,8 @@ mod complex {
                 abs_pow * (exp * arg).sin(),
             )
         }
-        #[inline(always)] // noinspection SpellCheckingInspection
-        pub fn powc(self, exp: Self) -> Self {
+        #[inline(always)]
+        pub fn pow(self, exp: Self) -> Self {
             let ln: Self = self.ln();
             Self::new(
                 (exp.real * ln.real - exp.imag * ln.imag).exp(),
@@ -143,7 +143,7 @@ mod complex {
         }
         #[inline(always)]
         pub fn atan(self) -> Self {
-            Self::IMAG_UNIT * Self::with_real(0.5) * (
+            Self::IMAG_UNIT * Self::with_real(0.5_f64) * (
                 (-(Self::IMAG_UNIT * self) + 1.0_f64) / (Self::IMAG_UNIT * self + 1.0_f64)
             ).ln()
         }
@@ -157,7 +157,7 @@ mod complex {
         }
         #[inline(always)]
         pub fn atanh(self) -> Self {
-            Self::with_real(0.5) * ((self + 1.0_f64) / (-self + 1.0_f64)).ln()
+            Self::with_real(0.5_f64) * ((self + 1.0_f64) / (-self + 1.0_f64)).ln()
         }
     }
     impl Neg for Complex {
